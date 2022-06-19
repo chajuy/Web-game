@@ -1,26 +1,54 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <div> {{first}} 곱하기 {{second}} 는?</div>
+    <input type="number" ref="answer" v-model="enter">
+    <button type="submit" @click="onSubmitForm">입력</button>
+    <div> {{result}} </div>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import { ref } from 'vue';
+ 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  setup() {
+    const first = ref(Math.ceil(Math.random() * 9));
+    const second = ref(Math.ceil(Math.random() * 9));
+    const answer = ref(null)
+    let enter = ref('');
+    let result = ref('');
+  
+    const onSubmitForm = (e) => {
+      e.preventDefault();
+      if(first.value * second.value === enter.value) {
+        result.value = '정답';
+        first.value = Math.ceil(Math.random() * 9);
+        second.value = Math.ceil(Math.random() * 9);
+        enter.value = '';
+        answer.value.focus();
+      } else {
+        result.value = '땡';
+        enter.value = '';
+        answer.value.focus();
+      }
+      
+    }
+
+
+    return {
+      first,
+      second,
+      enter,
+      result,
+      answer,
+      onSubmitForm,
+    }
   }
+ 
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
